@@ -1,65 +1,87 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://unistyl.es/), etc.
+ * MultiChallenge design system
+ * Premium arcade aesthetic — deep backgrounds, vibrant neons, glassmorphism.
  */
 
 import '@/global.css';
 
-import { Platform } from 'react-native';
+// ─── Palette ────────────────────────────────────────────────────────────────
 
-export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-  },
+export const Palette = {
+  // Backgrounds
+  bg0: '#0A0A14',       // deepest background
+  bg1: '#10101E',       // screen background
+  bg2: '#16162A',       // card / surface
+  bg3: '#1E1E36',       // elevated surface / input
+
+  // Accents
+  neonBlue:   '#3B82F6',
+  neonPurple: '#8B5CF6',
+  neonPink:   '#EC4899',
+  neonGreen:  '#10B981',
+  neonYellow: '#F59E0B',
+  neonRed:    '#EF4444',
+
+  // Text
+  textPrimary:   '#F0F0FF',
+  textSecondary: '#8888AA',
+  textMuted:     '#44445A',
+
+  // Utility
+  white: '#FFFFFF',
+  black: '#000000',
+  overlay: 'rgba(0,0,0,0.6)',
 } as const;
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+// ─── Gradients ───────────────────────────────────────────────────────────────
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
+export const Gradients = {
+  heroBg:    [Palette.bg0, '#0D0D22'],
+  cardBlue:  [Palette.neonBlue,   '#1D4ED8'],
+  cardPurple:[Palette.neonPurple, '#6D28D9'],
+  cardPink:  [Palette.neonPink,   '#BE185D'],
+  cardGreen: [Palette.neonGreen,  '#059669'],
+} as const;
+
+// ─── Typography ──────────────────────────────────────────────────────────────
+
+export const FontSize = {
+  xs:   11,
+  sm:   13,
+  base: 16,
+  md:   18,
+  lg:   22,
+  xl:   28,
+  xxl:  36,
+  hero: 48,
+} as const;
+
+export const FontWeight = {
+  regular: '400' as const,
+  medium:  '500' as const,
+  semibold:'600' as const,
+  bold:    '700' as const,
+  black:   '900' as const,
+};
+
+// ─── Spacing ─────────────────────────────────────────────────────────────────
 
 export const Spacing = {
-  half: 2,
-  one: 4,
-  two: 8,
-  three: 16,
-  four: 24,
-  five: 32,
-  six: 64,
+  xs:  4,
+  sm:  8,
+  md:  16,
+  lg:  24,
+  xl:  32,
+  xxl: 48,
+  xxxl:64,
 } as const;
 
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
+// ─── Radii ───────────────────────────────────────────────────────────────────
+
+export const Radius = {
+  sm:   8,
+  md:   12,
+  lg:   16,
+  xl:   24,
+  full: 999,
+} as const;

@@ -1,98 +1,95 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { Palette, Spacing, FontSize, FontWeight, Radius } from '@/constants/theme';
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <View style={styles.root}>
+      <SafeAreaView style={styles.safe}>
+        <View style={styles.hero}>
+          <Text style={styles.emoji}>🎮</Text>
+          <Text style={styles.title}>MultiChallenge</Text>
+          <Text style={styles.subtitle}>
+            Up to 8 players · 15+ minigames · First to 30 wins
+          </Text>
+        </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+        <View style={styles.actions}>
+          <Pressable
+            style={({ pressed }) => [styles.btn, styles.btnPrimary, pressed && styles.btnPressed]}
+            onPress={() => router.push({ pathname: '/profile' as never, params: { mode: 'create' } })}>
+            <Text style={styles.btnText}>🚀  Create Game</Text>
+          </Pressable>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+          <Pressable
+            style={({ pressed }) => [styles.btn, styles.btnSecondary, pressed && styles.btnPressed]}
+            onPress={() => router.push({ pathname: '/profile' as never, params: { mode: 'join' } })}>
+            <Text style={styles.btnText}>🔑  Join Game</Text>
+          </Pressable>
+        </View>
 
-        {Platform.OS === 'web' && <WebBadge />}
+        <Text style={styles.footer}>Gather your friends and start competing</Text>
       </SafeAreaView>
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: Palette.bg1,
   },
-  safeArea: {
+  safe: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    paddingHorizontal: Spacing.lg,
+    justifyContent: 'space-between',
+    paddingBottom: Spacing.xl,
   },
-  heroSection: {
+  hero: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    gap: Spacing.md,
   },
+  emoji: { fontSize: 72 },
   title: {
+    fontSize: FontSize.hero,
+    fontWeight: FontWeight.black,
+    color: Palette.textPrimary,
     textAlign: 'center',
+    letterSpacing: -1,
   },
-  code: {
-    textTransform: 'uppercase',
+  subtitle: {
+    fontSize: FontSize.base,
+    color: Palette.textSecondary,
+    textAlign: 'center',
+    lineHeight: 24,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  actions: { gap: Spacing.md },
+  btn: {
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: Radius.lg,
+    alignItems: 'center',
+  },
+  btnPrimary:   { backgroundColor: Palette.neonBlue },
+  btnSecondary: {
+    backgroundColor: Palette.bg3,
+    borderWidth: 1,
+    borderColor: Palette.neonPurple,
+  },
+  btnPressed: { opacity: 0.75 },
+  btnText: {
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.bold,
+    color: Palette.textPrimary,
+  },
+  footer: {
+    marginTop: Spacing.lg,
+    textAlign: 'center',
+    fontSize: FontSize.sm,
+    color: Palette.textMuted,
   },
 });
