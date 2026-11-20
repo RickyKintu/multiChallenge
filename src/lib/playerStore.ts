@@ -18,6 +18,8 @@ export async function getOrCreatePlayer(
       .eq('id', existingId)
       .single();
     if (!error && data) return data as Player;
+    // If lookup fails (e.g. row deleted), fall through to create a new one
+    await AsyncStorage.removeItem(PLAYER_ID_KEY);
   }
 
   // Create new
@@ -27,7 +29,13 @@ export async function getOrCreatePlayer(
     .select()
     .single();
 
-  if (error || !data) throw new Error('Failed to create player profile');
+  if (error || !data) {
+    // Surface the real Supabase error so it's debuggable
+    const detail = error
+      ? `${error.message} (code: ${error.code})`
+      : 'No data returned';
+    throw new Error(`Failed to create player profile: ${detail}`);
+  }
 
   await AsyncStorage.setItem(PLAYER_ID_KEY, data.id);
   return data as Player;

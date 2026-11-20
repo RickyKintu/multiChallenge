@@ -54,7 +54,9 @@ export default function ProfileScreen() {
         router.push({ pathname: '/join-room' as never, params: { playerId: player.id, username: name, avatar } });
       }
     } catch (e: unknown) {
-      Alert.alert('Error', (e as Error).message ?? 'Something went wrong');
+      const msg = (e as Error).message ?? 'Something went wrong';
+      console.error('[Profile] getOrCreatePlayer failed:', msg);
+      Alert.alert('Connection Error', msg);
     } finally {
       setLoading(false);
     }
